@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arka &amp; Nayla — Undangan Pernikahan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   PANDUAN CEPAT
+   • Nama, orang tua, alamat, IG ............ langsung di teks HTML
+   • Tanggal hitung mundur .................. <body data-tanggal="...">
+   • Nomor rekening ......................... atribut data-no="..."
+   • Foto ................................... cari komentar  [SLOT FOTO]
+     Tiap slot foto sudah diberi catatan: foto seperti apa yang cocok.
+   ========================================================================== */
+
+:root{
+  --paper:#E9ECE6;
+  --paper-2:#DFE3DB;
+  --paper-3:#F3F5F0;
+  --ink:#1E2A25;
+  --ink-soft:#4E5A53;
+  --muted:#7A857D;
+  --brass:#93805A;
+  --brass-lite:#C9BA97;
+  --line:rgba(30,42,37,.14);
+  --kaca:rgba(255,255,255,.55);
+  --bayang-1:0 2px 6px rgba(30,42,37,.06);
+  --bayang-2:0 18px 40px -22px rgba(30,42,37,.40);
+  --bayang-3:0 46px 90px -40px rgba(30,42,37,.55);
+
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+  --script:"Pinyon Script",cursive;
+
+  --pad:clamp(20px,5vw,40px);
+  --maxw:660px;
+
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#151916;--paper-2:#1B201C;--paper-3:#0F1311;
+    --ink:#E7EAE4;--ink-soft:#B3BCB4;--muted:#8C968D;
+    --brass:#C4AE7E;--brass-lite:#8A7A55;
+    --line:rgba(231,234,228,.16);
+    --kaca:rgba(255,255,255,.06);
+    --bayang-2:0 18px 40px -22px rgba(0,0,0,.8);
+    --bayang-3:0 46px 90px -40px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#151916;--paper-2:#1B201C;--paper-3:#0F1311;
+  --ink:#E7EAE4;--ink-soft:#B3BCB4;--muted:#8C968D;
+  --brass:#C4AE7E;--brass-lite:#8A7A55;
+  --line:rgba(231,234,228,.16);--kaca:rgba(255,255,255,.06);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.75;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body.terkunci{overflow:hidden;height:100%;position:fixed;width:100%}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+
+/* ============ LOADING ============ */
+#loading{position:fixed;inset:0;z-index:120;background:var(--paper-3);display:grid;place-items:center;
+  transition:opacity .9s ease,visibility .9s}
+#loading.selesai{opacity:0;visibility:hidden}
+.loader-in{display:grid;gap:24px;justify-items:center;text-align:center}
+.monogram{width:96px;height:96px}
+.monogram path,.monogram circle{fill:none;stroke:var(--brass);stroke-width:.9;
+  stroke-dasharray:var(--len,300);stroke-dashoffset:var(--len,300);
+  animation:gambar 2.4s cubic-bezier(.65,0,.35,1) forwards}
+.monogram circle{animation-delay:.2s}
+@keyframes gambar{to{stroke-dashoffset:0}}
+.monogram-teks{font-family:var(--serif);font-size:30px;letter-spacing:.18em;opacity:0;animation:naik .9s .6s forwards}
+.loader-bar{width:120px;height:1px;background:var(--line);position:relative;overflow:hidden}
+.loader-bar i{position:absolute;inset:0;background:var(--brass);transform-origin:left;transform:scaleX(0)}
+.loader-kata{font-size:11px;letter-spacing:.34em;color:var(--muted);opacity:0;animation:naik .9s 1s forwards}
+@keyframes naik{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ============ SAMPUL — pintu 3D ============ */
+#sampul{position:fixed;inset:0;z-index:110;perspective:1400px;perspective-origin:50% 45%;
+  background:var(--paper-3);overflow:hidden}
+.daun{position:absolute;top:0;bottom:0;width:50.4%;background:var(--paper-2);
+  transform-style:preserve-3d;transition:transform 1.6s cubic-bezier(.72,0,.24,1),opacity 1.2s ease .3s;z-index:1;
+  box-shadow:inset 0 0 90px rgba(30,42,37,.09)}
+.daun.kiri{left:0;transform-origin:left center;
+  background-image:linear-gradient(90deg,transparent 60%,rgba(30,42,37,.07))}
+.daun.kanan{right:0;transform-origin:right center;
+  background-image:linear-gradient(270deg,transparent 60%,rgba(30,42,37,.07))}
+.daun::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:var(--brass);opacity:.35}
+.daun.kiri::after{right:0}.daun.kanan::after{left:0}
+#sampul.buka .daun.kiri{transform:rotateY(-105deg)}
+#sampul.buka .daun.kanan{transform:rotateY(105deg)}
+#sampul.buka .daun{opacity:0}
+
+.sampul-in{position:absolute;inset:0;z-index:3;display:grid;place-content:center;justify-items:center;gap:18px;
+  text-align:center;padding:calc(var(--pad) + env(safe-area-inset-top,0px)) var(--pad);
+  transition:transform 1.4s cubic-bezier(.72,0,.24,1),opacity .9s ease}
+#sampul.buka .sampul-in{transform:translateZ(340px) scale(1.18);opacity:0}
+.sampul-in>*{opacity:0;transform:translateY(14px);animation:naik 1s cubic-bezier(.2,.7,.2,1) forwards}
+.sampul-in>*:nth-child(1){animation-delay:.1s}
+.sampul-in>*:nth-child(2){animation-delay:.24s}
+.sampul-in>*:nth-child(3){animation-delay:.38s}
+.sampul-in>*:nth-child(4){animation-delay:.5s}
+.sampul-in>*:nth-child(5){animation-delay:.62s}
+.sampul-in>*:nth-child(6){animation-delay:.76s}
+
+.mini{font-size:11px;letter-spacing:.34em;color:var(--muted)}
+.nama-sampul{font-family:var(--serif);font-weight:300;line-height:1.02;margin:0;
+  font-size:clamp(44px,13vw,70px)}
+.amp{font-family:var(--script);font-size:.82em;color:var(--brass);display:block;line-height:.85;margin:2px 0}
+.garis{width:56px;height:1px;background:var(--brass);opacity:.75}
+.kpd{display:grid;gap:5px;margin-top:4px}
+.kpd small{font-size:11px;letter-spacing:.28em;color:var(--muted)}
+.kpd b{font-family:var(--serif);font-weight:400;font-size:23px}
+
+.tombol{border:1px solid var(--brass);background:transparent;color:var(--ink);
+  padding:13px 30px;border-radius:999px;font-size:12px;letter-spacing:.2em;
+  position:relative;overflow:hidden;transition:color .5s ease,transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s;
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  transform-style:preserve-3d}
+.tombol span,.tombol svg{position:relative;z-index:2}
+.tombol svg{width:13px;height:13px}
+.tombol::before{content:"";position:absolute;inset:0;background:var(--brass);
+  transform:translateY(101%);transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+.tombol:hover{color:var(--paper);transform:translateY(-3px);box-shadow:var(--bayang-2)}
+.tombol:hover::before{transform:translateY(0)}
+
+/* ============ PARALLAX & 3D ============ */
+main{position:relative;z-index:2;opacity:0;transition:opacity 1s ease .4s}
+main.tampil{opacity:1}
+
+.lapis{position:absolute;inset:0;pointer-events:none;will-change:transform}
+.pano{position:relative;overflow:hidden;isolation:isolate}
+
+/* reveal */
+.muncul{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1.1s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.muncul.aktif{opacity:1;transform:none}
+.tarik{transform:scaleX(0);transition:transform 1.1s cubic-bezier(.76,0,.24,1);transition-delay:var(--d,0s)}
+.tarik.aktif{transform:scaleX(1)}
+/* reveal 3D: kartu bangkit dari kejauhan */
+.bangkit{opacity:0;transform:perspective(1200px) rotateX(14deg) translateY(56px) translateZ(-90px);
+  transition:opacity 1.1s ease,transform 1.3s cubic-bezier(.2,.75,.2,1);transition-delay:var(--d,0s)}
+.bangkit.aktif{opacity:1;transform:perspective(1200px) rotateX(0) translateY(0) translateZ(0)}
+/* reveal 3D: membuka seperti halaman */
+.halaman{opacity:0;transform:perspective(1100px) rotateY(-22deg) translateX(30px);transform-origin:left center;
+  transition:opacity 1.1s ease,transform 1.3s cubic-bezier(.2,.75,.2,1);transition-delay:var(--d,0s)}
+.halaman.kanan{transform:perspective(1100px) rotateY(22deg) translateX(-30px);transform-origin:right center}
+.halaman.aktif{opacity:1;transform:perspective(1100px) rotateY(0) translateX(0)}
+
+/* kilau emas menyapu sekali saat muncul */
+.kilau{position:relative;overflow:hidden}
+.kilau::after{content:"";position:absolute;inset:-20%;pointer-events:none;z-index:4;
+  background:linear-gradient(104deg,transparent 38%,rgba(255,255,255,.62) 50%,transparent 62%);
+  transform:translateX(-130%);}
+.kilau.aktif::after{transform:translateX(130%);transition:transform 1.6s cubic-bezier(.4,0,.2,1) .35s}
+
+/* wadah tilt 3D */
+.tilt{perspective:900px}
+.tilt-in{transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.tilt.aktif-tilt .tilt-in{transition:transform .12s linear}
+.naik-z{transform:translateZ(38px)}
+
+section{padding:clamp(80px,14vh,130px) var(--pad);max-width:var(--maxw);margin:0 auto;position:relative;z-index:2}
+.lebar{max-width:none;padding-left:0;padding-right:0}
+.lebar .isi{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);position:relative;z-index:2}
+.tenang{background:var(--paper-2)}
+
+h2{font-family:var(--serif);font-weight:300;font-size:clamp(30px,7vw,42px);line-height:1.12;margin:0 0 6px}
+h3{font-family:var(--serif);font-weight:400;font-size:26px;margin:0}
+p{margin:0 0 14px;color:var(--ink-soft)}
+.tengah{text-align:center}
+.tengah .garis{margin-inline:auto}
+.eyebrow{font-size:11px;letter-spacing:.34em;color:var(--brass);margin-bottom:14px}
+
+/* ============ HERO PARALLAX ============ */
+#hero{min-height:100svh;max-width:none;padding:0;display:grid;place-items:center;overflow:hidden;
+  perspective:1200px}
+#hero .lapis-langit{background:
+  radial-gradient(120% 80% at 50% 8%, rgba(201,186,151,.36), transparent 58%),
+  radial-gradient(90% 60% at 82% 96%, rgba(147,128,90,.22), transparent 62%),
+  linear-gradient(180deg,var(--paper-3),var(--paper));
+  inset:-14% 0}
+#hero .lapis svg{position:absolute;left:50%;transform:translateX(-50%)}
+.lengkung{width:min(560px,92vw);top:6%;opacity:.5}
+.dahan-kiri{left:-6%!important;transform:none!important;bottom:-4%;width:min(300px,46vw);opacity:.55}
+.dahan-kanan{left:auto!important;right:-8%!important;transform:scaleX(-1)!important;bottom:-10%;width:min(340px,52vw);opacity:.45}
+.dahan-atas{left:auto!important;right:-4%!important;top:-6%;transform:scaleY(-1) scaleX(-1)!important;width:min(240px,38vw);opacity:.32}
+
+.hero-in{position:relative;z-index:5;text-align:center;padding:0 var(--pad);will-change:transform}
+.hero-kecil{font-size:11px;letter-spacing:.36em;color:var(--muted)}
+.hero-nama{font-family:var(--serif);font-weight:300;line-height:.98;margin:14px 0;
+  font-size:clamp(52px,15vw,96px);text-shadow:0 22px 44px rgba(30,42,37,.10)}
+.hero-tgl{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:26px;
+  font-size:13px;letter-spacing:.22em;color:var(--ink-soft)}
+.hero-tgl i{width:34px;height:1px;background:var(--line)}
+.gulir{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:grid;gap:9px;justify-items:center;z-index:6}
+.gulir small{font-size:10px;letter-spacing:.3em;color:var(--muted)}
+.gulir i{display:block;width:1px;height:46px;background:linear-gradient(var(--brass),transparent);animation:turun 2.4s infinite}
+@keyframes turun{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}
+  55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* debu emas */
+.debu{position:absolute;inset:0;pointer-events:none;z-index:4;overflow:hidden}
+.debu i{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--brass);opacity:.0;
+  animation:apung linear infinite}
+@keyframes apung{
+  0%{opacity:0;transform:translateY(20px) scale(.6)}
+  15%{opacity:.5}
+  85%{opacity:.35}
+  100%{opacity:0;transform:translateY(-140px) scale(1.1)}
+}
+
+/* ============ PITA FOTO PARALLAX ============ */
+.pita{position:relative;height:min(74svh,560px);overflow:hidden;background:var(--paper-3);
+  display:grid;place-items:center;isolation:isolate}
+.pita .bingkai-latar{position:absolute;inset:-18% 0;will-change:transform}
+.pita .bingkai-latar img{width:100%;height:100%;object-fit:cover}
+.pita .kosongan{position:absolute;inset:-18% 0;
+  background:
+    repeating-linear-gradient(115deg,rgba(147,128,90,.06) 0 12px,transparent 12px 26px),
+    linear-gradient(160deg,var(--paper-2),var(--paper-3));
+  display:grid;place-items:center}
+.pita .kosongan span{font-family:var(--script);font-size:clamp(50px,12vw,92px);color:var(--brass);opacity:.35}
+.pita::after{content:"";position:absolute;inset:0;z-index:2;
+  background:linear-gradient(180deg,var(--paper) 0%,transparent 22%,transparent 78%,var(--paper) 100%)}
+.pita-teks{position:relative;z-index:3;text-align:center;padding:0 var(--pad);will-change:transform}
+.pita-teks .ayat{text-shadow:0 2px 20px var(--paper)}
+.ayat{font-family:var(--serif);font-size:clamp(19px,4.6vw,24px);line-height:1.7;font-style:italic;
+  color:var(--ink);max-width:30ch;margin:0 auto 16px}
+.sumber{font-size:11px;letter-spacing:.24em;color:var(--brass)}
+
+/* ============ MEMPELAI 3D ============ */
+.mempelai{display:grid;gap:60px;margin-top:48px}
+.orang{display:grid;gap:15px;justify-items:center;text-align:center}
+.potret{width:min(200px,58vw);aspect-ratio:3/4;position:relative;
+  border-radius:120px 120px 8px 8px;background:linear-gradient(160deg,var(--paper-3),var(--paper-2));
+  box-shadow:var(--bayang-3),var(--bayang-1);overflow:hidden;display:grid;place-items:center;
+  border:1px solid var(--line)}
+.potret::before{content:"";position:absolute;inset:9px;border:1px solid var(--brass);opacity:.45;
+  border-radius:112px 112px 4px 4px;z-index:3;pointer-events:none}
+.potret img{position:absolute;inset:-10% 0;width:100%;height:120%;object-fit:cover;will-change:transform}
+.potret .inisial{font-family:var(--script);font-size:54px;color:var(--brass);opacity:.5}
+.nama-orang{font-family:var(--serif);font-weight:400;font-size:clamp(28px,7vw,34px);line-height:1.2;margin:0}
+.ortu{font-size:14px;color:var(--muted);line-height:1.6;max-width:28ch;margin:0}
+.ig{display:inline-flex;gap:7px;align-items:center;font-size:12px;letter-spacing:.14em;color:var(--brass);
+  text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .3s}
+.ig:hover{border-color:var(--brass)}
+.ig svg{width:14px;height:14px}
+.pemisah{display:grid;place-items:center;font-family:var(--script);font-size:56px;color:var(--brass);line-height:.7}
+
+/* ============ HITUNG MUNDUR ============ */
+.mundur{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(6px,2vw,12px);margin:36px 0 30px;perspective:900px}
+.sel{border:1px solid var(--line);padding:18px 4px 14px;text-align:center;background:var(--paper-3);
+  box-shadow:var(--bayang-1);position:relative}
+.sel b{font-family:var(--serif);font-weight:300;font-size:clamp(26px,8vw,38px);display:block;line-height:1;
+  font-variant-numeric:tabular-nums}
+.sel small{font-size:9.5px;letter-spacing:.18em;color:var(--muted);display:block;margin-top:8px}
+
+/* ============ ACARA ============ */
+.acara{display:grid;gap:26px;margin-top:40px;perspective:1200px}
+.kartu{border:1px solid var(--line);background:var(--paper-3);padding:clamp(28px,6vw,38px) clamp(20px,5vw,30px);
+  text-align:center;display:grid;gap:10px;justify-items:center;box-shadow:var(--bayang-2);
+  transform-style:preserve-3d}
+.kartu::before{content:"";position:absolute;inset:8px;border:1px solid var(--brass);opacity:.22;pointer-events:none}
+.kartu{position:relative}
+.kartu .judul{font-family:var(--serif);font-size:27px}
+.kartu .waktu{font-size:14px;color:var(--ink-soft);line-height:1.9}
+.kartu .tempat{font-size:13px;color:var(--muted);max-width:30ch;line-height:1.7}
+
+/* ============ CERITA ============ */
+.cerita{display:grid;margin-top:42px;position:relative}
+.bab{display:grid;grid-template-columns:78px 1fr;gap:20px;padding-bottom:40px;position:relative}
+.bab:last-child{padding-bottom:0}
+.bab::before{content:"";position:absolute;left:11px;top:22px;bottom:-4px;width:1px;background:var(--line)}
+.bab:last-child::before{display:none}
+.bab .titik{position:absolute;left:7px;top:15px;width:9px;height:9px;border-radius:50%;
+  border:1px solid var(--brass);background:var(--paper-2)}
+.bab .thn{font-family:var(--serif);font-size:20px;color:var(--brass);padding-left:26px;line-height:1.6}
+.bab h4{font-family:var(--serif);font-weight:400;font-size:20px;margin:0 0 6px}
+.bab p{margin:0;font-size:15px}
+
+/* ============ GALERI 3D ============ */
+.galeri{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(8px,2.4vw,14px);margin-top:38px;perspective:1300px}
+.bingkai{position:relative;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(150deg,var(--paper-3),var(--paper-2));
+  border:1px solid var(--line);box-shadow:var(--bayang-2);display:grid;place-items:center}
+.bingkai:nth-child(3){grid-column:span 2;aspect-ratio:16/10}
+.bingkai img{position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;will-change:transform}
+.bingkai .inisial{font-family:var(--script);font-size:clamp(28px,7vw,40px);color:var(--brass);opacity:.4}
+
+/* ============ PENUTUP ============ */
+#penutup{min-height:88svh;display:grid;align-content:center;text-align:center;overflow:hidden;padding-block:0}
+#penutup .lapis-glow{background:radial-gradient(70% 50% at 50% 50%,rgba(201,186,151,.32),transparent 65%);inset:-20% 0}
+.penutup-nama{font-family:var(--serif);font-weight:300;font-size:clamp(40px,12vw,68px);line-height:1.02;margin:26px 0 8px}
+.kredit{font-size:10.5px;letter-spacing:.24em;color:var(--muted);margin-top:54px}
+
+/* ============ DAUN JATUH ============ */
+#daun-jatuh{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden;
+  opacity:0;transition:opacity 2s ease .6s}
+#daun-jatuh.ada{opacity:1}
+#daun-jatuh i{position:absolute;top:0;display:block;will-change:transform;
+  animation-name:luruh;animation-timing-function:linear;animation-iteration-count:infinite}
+#daun-jatuh svg{display:block;color:var(--brass);
+  animation:ayun ease-in-out infinite alternate;transform-origin:50% 45%}
+@keyframes luruh{
+  0%{transform:translate3d(0,-14vh,0);opacity:0}
+  10%{opacity:var(--o,.4)}
+  88%{opacity:var(--o,.4)}
+  100%{transform:translate3d(var(--x,40px),114vh,0);opacity:0}
+}
+@keyframes ayun{
+  0%{transform:rotate(-26deg) translateX(-11px)}
+  100%{transform:rotate(32deg) translateX(11px)}
+}
+
+/* ============ KONTROL ============ */
+#musik{position:fixed;z-index:80;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--paper-3);
+  display:grid;place-items:center;opacity:0;transform:scale(.8);box-shadow:var(--bayang-2);
+  transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1),border-color .3s;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#musik.ada{opacity:1;transform:none}
+#musik:hover{border-color:var(--brass)}
+.bar{display:flex;align-items:flex-end;gap:2.5px;height:15px}
+.bar i{width:2px;background:var(--brass);height:5px;border-radius:1px}
+#musik.main .bar i{animation:goyang 1.1s ease-in-out infinite}
+#musik.main .bar i:nth-child(2){animation-delay:.18s}
+#musik.main .bar i:nth-child(3){animation-delay:.36s}
+#musik.main .bar i:nth-child(4){animation-delay:.54s}
+@keyframes goyang{0%,100%{height:4px}50%{height:15px}}
+
+#nav{position:fixed;z-index:80;right:18px;top:50%;transform:translateY(-50%);display:grid;gap:13px;opacity:0;
+  transition:opacity .6s ease}
+#nav.ada{opacity:1}
+#nav a{width:6px;height:6px;border-radius:50%;background:var(--line);display:block;
+  transition:background .4s,transform .4s}
+#nav a.kini{background:var(--brass);transform:scale(1.6)}
+@media (max-width:820px){#nav{display:none}}
+
+/* ============ RESPONSIF ============ */
+@media (min-width:680px){
+  .mempelai{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px}
+  .pemisah{font-size:68px}
+  .acara{grid-template-columns:1fr 1fr}
+  .bab{grid-template-columns:100px 1fr}
+  .galeri{grid-template-columns:repeat(3,1fr)}
+  .bingkai:nth-child(3){grid-column:span 1;aspect-ratio:3/4}
+  .bingkai:nth-child(1){grid-row:span 2;aspect-ratio:3/5}
+}
+@media (min-width:1100px){
+  :root{--maxw:760px}
+  .pita{height:min(86svh,680px)}
+}
+@media (max-width:420px){
+  .mundur{gap:5px}
+  .sel{padding:14px 2px 11px}
+}
+@media (hover:none){
+  .tombol:hover{transform:none;box-shadow:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+  .muncul,.bangkit,.halaman{opacity:1!important;transform:none!important}
+  .tarik{transform:none!important}
+  .lapis,.potret img,.bingkai img,.bingkai-latar{transform:none!important}
+  #daun-jatuh{display:none}
+}
+</style>
+</head>
+
+<body class="terkunci" data-tanggal="2026-12-12T08:00:00+07:00">
+
+<!-- ====== LOADING ====== -->
+<div id="loading">
+  <div class="loader-in">
+    <svg class="monogram" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="38" style="--len:240"></circle>
+      <path d="M34 66 L50 32 L66 66 M40 55 L60 55" style="--len:120"></path>
+    </svg>
+    <div class="monogram-teks">A &amp; N</div>
+    <div class="loader-bar"><i></i></div>
+    <div class="loader-kata">Menyiapkan undangan</div>
+  </div>
+</div>
+
+<!-- ====== SAMPUL (pintu 3D) ====== -->
+<div id="sampul">
+  <div class="daun kiri"></div>
+  <div class="daun kanan"></div>
+  <div class="sampul-in">
+    <div class="mini">Undangan pernikahan</div>
+    <h1 class="nama-sampul">Arka<span class="amp">&amp;</span>Nayla</h1>
+    <div class="garis"></div>
+    <div class="mini">Sabtu, 12 Desember 2026</div>
+    <div class="kpd"><small>Kepada</small><b id="tamu">Bapak / Ibu / Saudara/i</b></div>
+    <button class="tombol" id="bukaBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="20" height="14" rx="1.5"/><path d="M2 6.5 12 13.5 22 6.5"/></svg>
+      <span>Buka undangan</span>
+    </button>
+  </div>
+</div>
+
+<!-- simbol daun untuk parallax -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="dahan" viewBox="0 0 130 220">
+    <g fill="none" stroke="#93805A" stroke-width="1.1" stroke-linecap="round">
+      <path d="M65 220C63 176 58 130 62 86 64 60 70 34 78 6"/>
+      <path d="M63 186C50 182 40 172 36 158M64 186c13-3 22-12 27-25"/>
+      <path d="M61 158C47 155 36 145 31 131M62 158c14-2 24-11 29-24"/>
+      <path d="M60 130C47 127 37 118 32 104M61 130c14-2 24-10 29-23"/>
+      <path d="M62 102C50 100 41 92 36 80M63 102c13-2 22-9 27-21"/>
+      <path d="M66 76C55 74 47 67 43 57M67 76c12-2 20-8 25-18"/>
+      <path d="M72 50C63 48 56 42 53 34M73 50c11-2 18-8 22-16"/>
+    </g>
+    <g fill="#93805A" opacity=".5">
+      <ellipse cx="34" cy="156" rx="12" ry="5.5" transform="rotate(-24 34 156)"/>
+      <ellipse cx="93" cy="159" rx="12" ry="5.5" transform="rotate(24 93 159)"/>
+      <ellipse cx="29" cy="129" rx="11" ry="5" transform="rotate(-26 29 129)"/>
+      <ellipse cx="93" cy="132" rx="11" ry="5" transform="rotate(26 93 132)"/>
+      <ellipse cx="30" cy="102" rx="10.5" ry="4.8" transform="rotate(-26 30 102)"/>
+      <ellipse cx="92" cy="105" rx="10.5" ry="4.8" transform="rotate(26 92 105)"/>
+      <ellipse cx="34" cy="78" rx="10" ry="4.5" transform="rotate(-28 34 78)"/>
+      <ellipse cx="92" cy="80" rx="10" ry="4.5" transform="rotate(28 92 80)"/>
+      <ellipse cx="41" cy="55" rx="9" ry="4.2" transform="rotate(-30 41 55)"/>
+      <ellipse cx="94" cy="57" rx="9" ry="4.2" transform="rotate(30 94 57)"/>
+      <ellipse cx="51" cy="32" rx="8" ry="3.8" transform="rotate(-32 51 32)"/>
+      <ellipse cx="96" cy="33" rx="8" ry="3.8" transform="rotate(32 96 33)"/>
+    </g>
+  </symbol>
+  <symbol id="lembar" viewBox="0 0 22 26">
+    <path d="M11 0C4.6 4.6.6 11.4.6 17c0 5 3.2 8.4 7.3 8.4 6.7 0 13.4-8.4 13.4-17.4 0-3.4-3.2-6.4-10.3-8Z"
+          fill="currentColor"/>
+    <path d="M10.4 2.6C9 9 7.4 16 5.6 24" stroke="rgba(255,255,255,.35)" stroke-width=".9" fill="none"/>
+  </symbol>
+</svg>
+
+<main id="isi">
+
+  <!-- ====== HERO: 5 LAPIS PARALLAX ====== -->
+  <section id="hero" class="pano">
+    <!-- lapis 1 : cahaya latar, paling lambat -->
+    <div class="lapis lapis-langit" data-p="0.08"></div>
+
+    <!-- lapis 2 : lengkung altar
+         [SLOT FOTO] Bisa diganti foto venue/altar yang difoto simetris dari jauh. -->
+    <div class="lapis" data-p="0.22">
+      <svg class="lengkung" viewBox="0 0 400 520" fill="none" stroke="#93805A" stroke-width="1.2" aria-hidden="true">
+        <path d="M40 520V210a160 160 0 0 1 320 0v310"/>
+        <path d="M62 520V212a138 138 0 0 1 276 0v308" opacity=".45"/>
+      </svg>
+    </div>
+
+    <!-- lapis 3 : dedaunan tengah -->
+    <div class="lapis" data-p="0.4">
+      <svg class="dahan-atas" viewBox="0 0 130 220" aria-hidden="true"><use href="#dahan"/></svg>
+    </div>
+
+    <!-- lapis 4 : teks utama, bergerak pelan + memudar -->
+    <div class="hero-in" data-p="0.16" data-pudar="1">
+      <div class="hero-kecil">The wedding of</div>
+      <h1 class="hero-nama">Arka<span class="amp">&amp;</span>Nayla</h1>
+      <div class="hero-tgl"><i></i><span>12 · 12 · 2026</span><i></i></div>
+    </div>
+
+    <!-- lapis 5 : dedaunan depan, paling cepat -->
+    <div class="lapis" data-p="0.75">
+      <svg class="dahan-kiri" viewBox="0 0 130 220" aria-hidden="true"><use href="#dahan"/></svg>
+      <svg class="dahan-kanan" viewBox="0 0 130 220" aria-hidden="true"><use href="#dahan"/></svg>
+    </div>
+
+    <div class="debu" id="debu"></div>
+    <div class="gulir"><small>Gulir</small><i></i></div>
+  </section>
+
+  <!-- ====== PITA FOTO + AYAT ====== -->
+  <div class="pita">
+    <!-- [SLOT FOTO 1] Foto lanskap horizontal, pasangan kecil di tengah frame,
+         banyak ruang kosong (pantai/bukit/lorong gedung). Gelapkan sedikit agar teks terbaca.
+         Ganti <div class="kosongan"> di bawah dengan:
+         <div class="bingkai-latar" data-p="0.3"><img src="foto-lebar.jpg" alt=""></div> -->
+    <div class="kosongan bingkai-latar" data-p="0.3"><span>A &amp; N</span></div>
+    <div class="pita-teks" data-p="-0.12">
+      <p class="ayat muncul">Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan dari jenismu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.</p>
+      <div class="sumber muncul" style="--d:.15s">Q.S. Ar-Rum : 21</div>
+    </div>
+  </div>
+
+  <!-- ====== MEMPELAI ====== -->
+  <section id="s-mempelai">
+    <div class="tengah">
+      <div class="eyebrow muncul">Dengan memohon rahmat Allah</div>
+      <h2 class="muncul" style="--d:.1s">Kami yang berbahagia</h2>
+      <div class="garis tarik" style="--d:.2s;margin-top:18px"></div>
+    </div>
+
+    <div class="mempelai">
+      <div class="orang">
+        <div class="tilt halaman kilau">
+          <div class="tilt-in potret">
+            <!-- [SLOT FOTO 2] Potret vertikal 3:4, wajah di sepertiga atas,
+                 latar polos/bokeh. Foto akan bergerak pelan di dalam bingkai. -->
+            <span class="inisial">A</span>
+          </div>
+        </div>
+        <h3 class="nama-orang muncul" style="--d:.12s">Arka Mahendra<br>Wicaksana</h3>
+        <p class="ortu muncul" style="--d:.18s">Putra pertama dari<br>Bapak Suryo Wicaksana &amp; Ibu Larasati</p>
+        <a class="ig muncul" style="--d:.24s" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          arkamahendra
+        </a>
+      </div>
+
+      <div class="pemisah muncul" style="--d:.1s">&amp;</div>
+
+      <div class="orang">
+        <div class="tilt halaman kanan kilau" style="--d:.14s">
+          <div class="tilt-in potret">
+            <!-- [SLOT FOTO 3] Potret vertikal 3:4 pasangan wanita, gaya sama dengan foto 2. -->
+            <span class="inisial">N</span>
+          </div>
+        </div>
+        <h3 class="nama-orang muncul" style="--d:.22s">Nayla Syafira<br>Putri</h3>
+        <p class="ortu muncul" style="--d:.28s">Putri kedua dari<br>Bapak Hendra Gunawan &amp; Ibu Ratnasari</p>
+        <a class="ig muncul" style="--d:.34s" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          naylasyafira
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== HITUNG MUNDUR ====== -->
+  <section class="tenang lebar pano" id="s-mundur">
+    <div class="lapis" data-p="0.3" style="opacity:.25">
+      <svg class="dahan-kiri" viewBox="0 0 130 220" aria-hidden="true"><use href="#dahan"/></svg>
+      <svg class="dahan-kanan" viewBox="0 0 130 220" aria-hidden="true"><use href="#dahan"/></svg>
+    </div>
+    <div class="isi tengah">
+      <div class="eyebrow muncul">Menuju hari bahagia</div>
+      <h2 class="muncul" style="--d:.1s">Sabtu, 12 Desember 2026</h2>
+      <div class="mundur">
+        <div class="sel bangkit" style="--d:.1s"><b id="hh">00</b><small>Hari</small></div>
+        <div class="sel bangkit" style="--d:.18s"><b id="jj">00</b><small>Jam</small></div>
+        <div class="sel bangkit" style="--d:.26s"><b id="mm">00</b><small>Menit</small></div>
+        <div class="sel bangkit" style="--d:.34s"><b id="dd">00</b><small>Detik</small></div>
+      </div>
+      <button class="tombol muncul" style="--d:.42s" id="kalenderBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <span>Simpan ke kalender</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ====== ACARA ====== -->
+  <section id="s-acara">
+    <div class="tengah">
+      <div class="eyebrow muncul">Waktu &amp; tempat</div>
+      <h2 class="muncul" style="--d:.1s">Rangkaian acara</h2>
+      <div class="garis tarik" style="--d:.2s;margin-top:18px"></div>
+    </div>
+    <div class="acara">
+      <div class="tilt bangkit kilau" style="--d:.08s">
+        <div class="tilt-in kartu">
+          <div class="judul naik-z">Akad Nikah</div>
+          <div class="garis"></div>
+          <div class="waktu">Sabtu, 12 Desember 2026<br>08.00 – 10.00 WIB</div>
+          <div class="tempat">Masjid Agung Trans Studio<br>Jl. Gatot Subroto No. 289, Bandung</div>
+        </div>
+      </div>
+      <div class="tilt bangkit kilau" style="--d:.2s">
+        <div class="tilt-in kartu">
+          <div class="judul naik-z">Resepsi</div>
+          <div class="garis"></div>
+          <div class="waktu">Sabtu, 12 Desember 2026<br>11.00 – 14.00 WIB</div>
+          <div class="tempat">Ballroom Padma Hotel<br>Jl. Ranca Bentang No. 56, Bandung</div>
+        </div>
+      </div>
+    </div>
+    <div class="tengah" style="margin-top:32px">
+      <a class="tombol muncul" style="--d:.3s" href="https://maps.google.com" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <span>Lihat lokasi</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ====== PITA FOTO KEDUA ====== -->
+  <div class="pita">
+    <!-- [SLOT FOTO 4] Foto suasana: tangan bergandengan, cincin, atau detail dekorasi.
+         Komposisi horizontal, objek sedikit ke pinggir. -->
+    <div class="kosongan bingkai-latar" data-p="0.34"><span>12.12.26</span></div>
+    <div class="pita-teks" data-p="-0.1">
+      <p class="ayat muncul">Dua keluarga, satu doa yang sama.</p>
+    </div>
+  </div>
+
+  <!-- ====== CERITA ====== -->
+  <section class="tenang lebar" id="s-cerita">
+    <div class="isi">
+      <div class="tengah">
+        <div class="eyebrow muncul">Perjalanan kami</div>
+        <h2 class="muncul" style="--d:.1s">Sampai di titik ini</h2>
+      </div>
+      <div class="cerita">
+        <div class="bab halaman">
+          <i class="titik"></i><div class="thn">2019</div>
+          <div><h4>Pertemuan pertama</h4>
+            <p>Satu kelompok tugas akhir, dua orang yang awalnya hanya bertukar catatan. Tidak ada yang menyangka pertemuan itu jadi awal segalanya.</p></div>
+        </div>
+        <div class="bab halaman" style="--d:.14s">
+          <i class="titik"></i><div class="thn">2021</div>
+          <div><h4>Memilih untuk serius</h4>
+            <p>Setelah dua tahun berteman dekat dan sempat terpisah kota, kami memutuskan berjalan bersama dengan niat yang jelas.</p></div>
+        </div>
+        <div class="bab halaman" style="--d:.28s">
+          <i class="titik"></i><div class="thn">2026</div>
+          <div><h4>Melamar dan menuju pelaminan</h4>
+            <p>Di depan kedua keluarga, semuanya menjadi nyata. Dan hari ini, kami mengundang Anda untuk ikut menyaksikannya.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== GALERI ====== -->
+  <section id="s-galeri">
+    <div class="tengah">
+      <div class="eyebrow muncul">Galeri</div>
+      <h2 class="muncul" style="--d:.1s">Momen kami</h2>
+    </div>
+    <!-- [SLOT FOTO 5–9] Semua vertikal 3:4. Campur: 1 full body, 2 medium shot,
+         1 detail (tangan/cincin/bunga), 1 candid tertawa. Warna senada. -->
+    <div class="galeri">
+      <div class="bingkai bangkit kilau"><span class="inisial">A&amp;N</span></div>
+      <div class="bingkai bangkit kilau" style="--d:.1s"><span class="inisial">A&amp;N</span></div>
+      <div class="bingkai bangkit kilau" style="--d:.2s"><span class="inisial">A&amp;N</span></div>
+      <div class="bingkai bangkit kilau" style="--d:.3s"><span class="inisial">A&amp;N</span></div>
+      <div class="bingkai bangkit kilau" style="--d:.4s"><span class="inisial">A&amp;N</span></div>
+    </div>
+  </section>
+
+  <!-- ====== PENUTUP ====== -->
+  <section class="tenang lebar pano" id="penutup">
+    <div class="lapis lapis-glow" data-p="0.14"></div>
+    <div class="lapis" data-p="0.5" style="opacity:.3">
+      <svg class="dahan-kiri" viewBox="0 0 130 220" aria-hidden="true"><use href="#dahan"/></svg>
+      <svg class="dahan-kanan" viewBox="0 0 130 220" aria-hidden="true"><use href="#dahan"/></svg>
+    </div>
+    <div class="isi tengah">
+      <p class="muncul" style="max-width:32ch;margin-inline:auto">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p>
+      <div class="garis tarik" style="--d:.16s;margin:26px auto"></div>
+      <div class="mini muncul" style="--d:.2s">Kami yang berbahagia</div>
+      <h2 class="penutup-nama muncul" style="--d:.3s">Arka<span class="amp">&amp;</span>Nayla</h2>
+      <div class="kredit muncul" style="--d:.42s">Terima kasih</div>
+    </div>
+  </section>
+</main>
+
+<div id="daun-jatuh" aria-hidden="true"></div>
+
+<nav id="nav" aria-label="Navigasi bagian">
+  <a href="#hero" data-t="hero" aria-label="Pembuka"></a>
+  <a href="#s-mempelai" data-t="s-mempelai" aria-label="Mempelai"></a>
+  <a href="#s-mundur" data-t="s-mundur" aria-label="Hitung mundur"></a>
+  <a href="#s-acara" data-t="s-acara" aria-label="Acara"></a>
+  <a href="#s-cerita" data-t="s-cerita" aria-label="Cerita"></a>
+  <a href="#s-galeri" data-t="s-galeri" aria-label="Galeri"></a>
+</nav>
+
+<button id="musik" aria-label="Putar musik" title="Musik"><span class="bar"><i></i><i></i><i></i><i></i></span></button>
+
+<script>
+(function(){
+"use strict";
+var diam = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var sentuh = window.matchMedia("(hover:none)").matches;
+
+/* ---- nama tamu: ?to=Nama ---- */
+try{
+  var p = new URLSearchParams(location.search);
+  var q = p.get("to") || p.get("kepada");
+  if(q) document.getElementById("tamu").textContent = q.replace(/\+/g," ");
+}catch(e){}
+
+/* ---- loading ---- */
+var loading = document.getElementById("loading");
+var barLoad = loading.querySelector(".loader-bar i");
+var t0 = Date.now(), durasi = diam ? 350 : 2500;
+(function jalan(){
+  var pr = Math.min(1,(Date.now()-t0)/durasi);
+  barLoad.style.transform = "scaleX("+pr+")";
+  if(pr<1) requestAnimationFrame(jalan);
+  else setTimeout(function(){ loading.classList.add("selesai"); }, 240);
+})();
+
+/* ---- debu emas ---- */
+(function(){
+  if(diam) return;
+  var w = document.getElementById("debu"), html = "";
+  for(var i=0;i<14;i++){
+    var kiri = Math.random()*100, dur = 9+Math.random()*10, del = Math.random()*10, uk = 1.5+Math.random()*2.5;
+    html += '<i style="left:'+kiri.toFixed(1)+'%;bottom:'+(Math.random()*70).toFixed(0)+'%;width:'+uk.toFixed(1)+
+            'px;height:'+uk.toFixed(1)+'px;animation-duration:'+dur.toFixed(1)+'s;animation-delay:-'+del.toFixed(1)+'s"></i>';
+  }
+  w.innerHTML = html;
+})();
+
+/* ---- MESIN PARALLAX ---- */
+var lapisan = [].slice.call(document.querySelectorAll("[data-p]"));
+var fotoDalam = [];  // foto di dalam bingkai: bergerak berlawanan sedikit
+function kumpulFoto(){
+  fotoDalam = [].slice.call(document.querySelectorAll(".potret img, .bingkai img"));
+}
+kumpulFoto();
+
+var vh = window.innerHeight, jalanRaf = false;
+function ukur(){ vh = window.innerHeight; }
+window.addEventListener("resize", ukur, {passive:true});
+
+function lukis(){
+  var i, el, r, tengah, maju;
+  for(i=0;i<lapisan.length;i++){
+    el = lapisan[i];
+    r = el.getBoundingClientRect();
+    if(r.bottom < -300 || r.top > vh+300) continue;
+    tengah = r.top + r.height/2;
+    maju = (tengah - vh/2) / vh;              // -1 .. 1
+    var geser = -maju * parseFloat(el.dataset.p) * 190;
+    el.style.transform = "translate3d(0,"+geser.toFixed(2)+"px,0)";
+    if(el.dataset.pudar){
+      var o = 1 - Math.min(1, Math.max(0, (-maju - .12) * 1.5));
+      el.style.opacity = o.toFixed(3);
+    }
+  }
+  for(i=0;i<fotoDalam.length;i++){
+    el = fotoDalam[i];
+    r = el.parentNode.getBoundingClientRect();
+    if(r.bottom < -200 || r.top > vh+200) continue;
+    maju = ((r.top + r.height/2) - vh/2) / vh;
+    el.style.transform = "translate3d(0,"+(maju*34).toFixed(2)+"px,0)";
+  }
+  jalanRaf = false;
+}
+function minta(){ if(!jalanRaf && !diam){ jalanRaf = true; requestAnimationFrame(lukis); } }
+window.addEventListener("scroll", minta, {passive:true});
+window.addEventListener("resize", minta, {passive:true});
+
+/* ---- TILT 3D (desktop: ikuti kursor · mobile: ikuti gulir) ---- */
+var tilts = [].slice.call(document.querySelectorAll(".tilt"));
+if(!diam){
+  if(!sentuh){
+    tilts.forEach(function(t){
+      var dalam = t.querySelector(".tilt-in");
+      t.addEventListener("pointermove", function(ev){
+        var r = t.getBoundingClientRect();
+        var x = (ev.clientX - r.left)/r.width - .5;
+        var y = (ev.clientY - r.top)/r.height - .5;
+        t.classList.add("aktif-tilt");
+        dalam.style.transform = "rotateY("+(x*13).toFixed(2)+"deg) rotateX("+(-y*13).toFixed(2)+"deg) translateZ(14px)";
+      });
+      t.addEventListener("pointerleave", function(){
+        t.classList.remove("aktif-tilt");
+        dalam.style.transform = "";
+      });
+    });
+  }else{
+    // di layar sentuh, kartu miring halus mengikuti posisinya di layar
+    var tiltMobile = function(){
+      tilts.forEach(function(t){
+        var r = t.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > vh) return;
+        var maju = ((r.top + r.height/2) - vh/2) / vh;
+        var d = t.querySelector(".tilt-in");
+        d.style.transform = "rotateX("+(maju*7).toFixed(2)+"deg)";
+      });
+    };
+    window.addEventListener("scroll", function(){ requestAnimationFrame(tiltMobile); }, {passive:true});
+  }
+}
+
+/* ---- REVEAL ---- */
+var elemen = document.querySelectorAll(".muncul,.tarik,.bangkit,.halaman,.kilau");
+function pasangReveal(){
+  if(!("IntersectionObserver" in window) || diam){
+    [].forEach.call(elemen, function(el){ el.classList.add("aktif"); });
+    return;
+  }
+  var io = new IntersectionObserver(function(en){
+    en.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add("aktif"); io.unobserve(e.target); }
+    });
+  },{threshold:.15, rootMargin:"0px 0px -6% 0px"});
+  [].forEach.call(elemen, function(el){ io.observe(el); });
+}
+
+/* titik navigasi */
+var titik = document.querySelectorAll("#nav a");
+if("IntersectionObserver" in window){
+  var io2 = new IntersectionObserver(function(en){
+    en.forEach(function(e){
+      if(e.isIntersecting){
+        [].forEach.call(titik, function(a){ a.classList.toggle("kini", a.dataset.t === e.target.id); });
+      }
+    });
+  },{threshold:.4});
+  [].forEach.call(titik, function(a){
+    var s = document.getElementById(a.dataset.t); if(s) io2.observe(s);
+  });
+}
+
+/* ---- MUSIK (dibangkitkan di browser) ---- */
+var ac, induk, jadwalId, hidup=false, siap=false;
+var panjangBar=3.2, langkah=panjangBar/8, idx=0, berikut=0;
+var N=function(m){ return 440*Math.pow(2,(m-69)/12); };
+var progresi=[{b:38,a:[62,66,69,74]},{b:33,a:[61,64,69,73]},{b:35,a:[62,66,71,74]},{b:30,a:[61,64,69,73]},
+              {b:31,a:[62,67,71,74]},{b:38,a:[62,66,69,74]},{b:31,a:[59,62,67,71]},{b:33,a:[61,64,69,73]}];
+var pola=[0,1,2,3,2,1,2,3];
+function buatAudio(){
+  var AC = window.AudioContext||window.webkitAudioContext; if(!AC) return false;
+  ac = new AC();
+  induk = ac.createGain(); induk.gain.value = 0;
+  var lpf = ac.createBiquadFilter(); lpf.type="lowpass"; lpf.frequency.value=2600;
+  var del = ac.createDelay(1.0); del.delayTime.value=.33;
+  var fb = ac.createGain(); fb.gain.value=.34;
+  var basah = ac.createGain(); basah.gain.value=.3;
+  induk.connect(lpf); lpf.connect(ac.destination);
+  lpf.connect(del); del.connect(fb); fb.connect(del); del.connect(basah); basah.connect(ac.destination);
+  siap = true; return true;
+}
+function nada(f,t,dur,vol,tipe){
+  var o=ac.createOscillator(), g=ac.createGain();
+  o.type=tipe||"triangle"; o.frequency.value=f;
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.exponentialRampToValueAtTime(vol,t+.05);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g); g.connect(induk); o.start(t); o.stop(t+dur+.05);
+}
+function ketuk(i,t){
+  var c=progresi[i%progresi.length];
+  nada(N(c.b),t,panjangBar*1.05,.075,"sine");
+  nada(N(c.b+12),t,panjangBar*.9,.028,"sine");
+  for(var s=0;s<8;s++){ nada(N(c.a[pola[s]] + (s===7?12:0)), t+s*langkah, 1.5, .05, "triangle"); }
+  nada(N(c.a[0]+12),t,panjangBar*1.1,.022,"sine");
+  nada(N(c.a[2]+12),t,panjangBar*1.1,.018,"sine");
+}
+function penjadwal(){
+  while(berikut < ac.currentTime + 1.2){
+    if(berikut < ac.currentTime) berikut = ac.currentTime + .05;
+    ketuk(idx++, berikut); berikut += panjangBar;
+  }
+}
+var tombolMusik = document.getElementById("musik");
+function mainkan(){
+  if(!siap && !buatAudio()) return;
+  if(ac.state==="suspended") ac.resume();
+  berikut = ac.currentTime + .1; penjadwal();
+  clearInterval(jadwalId); jadwalId = setInterval(penjadwal,250);
+  induk.gain.cancelScheduledValues(ac.currentTime);
+  induk.gain.setValueAtTime(Math.max(induk.gain.value,.0001), ac.currentTime);
+  induk.gain.linearRampToValueAtTime(.55, ac.currentTime+3);
+  hidup=true; tombolMusik.classList.add("main"); tombolMusik.setAttribute("aria-label","Hentikan musik");
+}
+function hentikan(){
+  if(!siap) return;
+  induk.gain.cancelScheduledValues(ac.currentTime);
+  induk.gain.setValueAtTime(induk.gain.value, ac.currentTime);
+  induk.gain.linearRampToValueAtTime(.0001, ac.currentTime+.8);
+  clearInterval(jadwalId); hidup=false;
+  tombolMusik.classList.remove("main"); tombolMusik.setAttribute("aria-label","Putar musik");
+}
+tombolMusik.addEventListener("click", function(){ hidup ? hentikan() : mainkan(); });
+document.addEventListener("visibilitychange", function(){
+  if(!siap||!hidup) return;
+  document.hidden ? ac.suspend() : ac.resume();
+});
+
+/* ---- BUKA UNDANGAN ---- */
+var sampul = document.getElementById("sampul");
+document.getElementById("bukaBtn").addEventListener("click", function(){
+  sampul.classList.add("buka");
+  document.body.classList.remove("terkunci");
+  document.getElementById("isi").classList.add("tampil");
+  mainkan();
+  window.scrollTo(0,0);
+  ukur(); minta(); pasangReveal(); tanamDaun();
+  setTimeout(function(){
+    document.getElementById("nav").classList.add("ada");
+    tombolMusik.classList.add("ada");
+  }, 1000);
+  setTimeout(function(){ sampul.style.display="none"; }, 1900);
+});
+
+/* ---- HITUNG MUNDUR ---- */
+var target = new Date(document.body.dataset.tanggal).getTime();
+var E = {hh:document.getElementById("hh"),jj:document.getElementById("jj"),
+         mm:document.getElementById("mm"),dd:document.getElementById("dd")};
+function dua(n){ return n<10 ? "0"+n : ""+n; }
+function hitung(){
+  var s = Math.max(0, Math.floor((target-Date.now())/1000));
+  E.hh.textContent = dua(Math.floor(s/86400));
+  E.jj.textContent = dua(Math.floor(s%86400/3600));
+  E.mm.textContent = dua(Math.floor(s%3600/60));
+  E.dd.textContent = dua(s%60);
+}
+hitung(); setInterval(hitung,1000);
+
+document.getElementById("kalenderBtn").addEventListener("click", function(){
+  var m = new Date(document.body.dataset.tanggal), s = new Date(m.getTime()+6*3600*1000);
+  var f = function(d){ return d.toISOString().replace(/[-:]/g,"").split(".")[0]+"Z"; };
+  var ics = ["BEGIN:VCALENDAR","VERSION:2.0","BEGIN:VEVENT","SUMMARY:Pernikahan Arka & Nayla",
+    "DTSTART:"+f(m),"DTEND:"+f(s),"LOCATION:Padma Hotel Bandung","END:VEVENT","END:VCALENDAR"].join("\r\n");
+  var a = document.createElement("a");
+  a.href = "data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);
+  a.download = "pernikahan-arka-nayla.ics";
+  document.body.appendChild(a); a.click(); a.remove();
+});
+
+/* ---- DAUN JATUH ---- */
+function tanamDaun(){
+  if(diam) return;
+  var w = document.getElementById("daun-jatuh");
+  if(w.childElementCount) return;
+  var jumlah = window.innerWidth < 640 ? 9 : 14, html = "";
+  for(var i=0;i<jumlah;i++){
+    var uk   = 9 + Math.random()*13,
+        kiri = Math.random()*100,
+        dur  = 15 + Math.random()*14,
+        del  = Math.random()*dur,
+        sway = 2.6 + Math.random()*2.6,
+        drift= (Math.random()*160 - 60).toFixed(0),
+        op   = (0.22 + Math.random()*0.26).toFixed(2);
+    html += '<i style="left:'+kiri.toFixed(1)+'%;--x:'+drift+'px;--o:'+op+
+            ';animation-duration:'+dur.toFixed(1)+'s;animation-delay:-'+del.toFixed(1)+'s">'+
+            '<svg width="'+uk.toFixed(1)+'" height="'+(uk*1.18).toFixed(1)+'" viewBox="0 0 22 26" '+
+            'style="animation-duration:'+sway.toFixed(1)+'s;animation-delay:-'+(Math.random()*sway).toFixed(1)+'s">'+
+            '<use href="#lembar"/></svg></i>';
+  }
+  w.innerHTML = html;
+  requestAnimationFrame(function(){ w.classList.add("ada"); });
+}
+
+/* jika foto ditambahkan belakangan, panggil ulang */
+window.addEventListener("load", function(){ kumpulFoto(); minta(); });
+})();
+</script>
+</body>
+</html>

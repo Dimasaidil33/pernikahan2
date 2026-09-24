@@ -350,15 +350,12 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 .galeri-foto{position:absolute;inset:12px;overflow:hidden;
   border-radius:50% 50% 8px 8px / 37% 37% 8px 8px;
   background:linear-gradient(150deg,var(--paper-2),var(--paper-3))}
+/* pergantian foto hanya memudar (fade), tanpa zoom in / zoom out */
 .galeri-slide .bingkai{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;
-  opacity:0;transform:scale(1.03);transition:opacity 1.5s cubic-bezier(.4,0,.2,1),transform 1.5s cubic-bezier(.4,0,.2,1);
+  opacity:0;transition:opacity 1.5s cubic-bezier(.4,0,.2,1);
   z-index:1}
-.galeri-slide .bingkai.aktif{opacity:1;transform:scale(1);z-index:2}
-.galeri-slide .bingkai img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transform:scale(1.08);transition:transform 6.5s linear}
-.galeri-slide .bingkai.aktif img{transform:scale(1.2)}
-.galeri-slide .bingkai:nth-child(odd).aktif img{transform-origin:30% 30%}
-.galeri-slide .bingkai:nth-child(even).aktif img{transform-origin:70% 65%}
+.galeri-slide .bingkai.aktif{opacity:1;z-index:2}
+.galeri-slide .bingkai img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .galeri-slide .inisial{font-family:var(--script);font-size:clamp(30px,8vw,44px);color:var(--brass);opacity:.4}
 .galeri-nav{display:flex;align-items:center;gap:16px}
 .galeri-dots{display:flex;align-items:center;gap:8px}

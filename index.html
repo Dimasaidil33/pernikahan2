@@ -338,9 +338,18 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 
 /* ============ GALERI — SLIDESHOW ============ */
 .galeri-wrap{margin-top:42px;display:grid;justify-items:center;gap:22px}
-.galeri-slide{position:relative;width:100%;max-width:460px;aspect-ratio:4/5;overflow:hidden;
-  background:linear-gradient(150deg,var(--paper-3),var(--paper-2));border:1px solid var(--line);
-  box-shadow:var(--bayang-3)}
+/* bingkai lengkung: pigura berpadding + garis emas tipis di luarnya, senada dengan potret mempelai */
+.galeri-slide{position:relative;width:100%;max-width:400px;aspect-ratio:3/4;
+  padding:12px;margin:10px 0;
+  border-radius:50% 50% 16px 16px / 37.5% 37.5% 16px 16px;
+  background:var(--paper-3);border:1px solid var(--line);
+  box-shadow:var(--bayang-3),var(--bayang-1)}
+.galeri-slide::before{content:"";position:absolute;inset:-10px;pointer-events:none;
+  border:1px solid var(--brass);opacity:.38;
+  border-radius:50% 50% 24px 24px / 38.5% 38.5% 24px 24px}
+.galeri-foto{position:absolute;inset:12px;overflow:hidden;
+  border-radius:50% 50% 8px 8px / 37% 37% 8px 8px;
+  background:linear-gradient(150deg,var(--paper-2),var(--paper-3))}
 .galeri-slide .bingkai{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;
   opacity:0;transform:scale(1.03);transition:opacity 1.5s cubic-bezier(.4,0,.2,1),transform 1.5s cubic-bezier(.4,0,.2,1);
   z-index:1}
@@ -418,7 +427,7 @@ p{margin:0 0 14px;color:var(--ink-soft)}
   .pemisah{font-size:68px}
   .acara{grid-template-columns:1fr 1fr}
   .bab{grid-template-columns:100px 1fr}
-  .galeri-slide{max-width:520px}
+  .galeri-slide{max-width:420px}
 }
 @media (min-width:1100px){
   :root{--maxw:760px}
@@ -709,13 +718,13 @@ p{margin:0 0 14px;color:var(--ink-soft)}
     </div>
     <div class="galeri-wrap bangkit" style="--d:.1s">
       <div class="galeri-slide" id="galeriSlide">
-        <div class="bingkai aktif" data-foto="galeri1"><span class="inisial">Y&amp;L</span></div>
-        <div class="bingkai" data-foto="galeri2"><span class="inisial">Y&amp;L</span></div>
-        <div class="bingkai" data-foto="galeri3"><span class="inisial">Y&amp;L</span></div>
-        <div class="bingkai" data-foto="galeri4"><span class="inisial">Y&amp;L</span></div>
-        <div class="bingkai" data-foto="galeri5"><span class="inisial">Y&amp;L</span></div>
-        <svg class="sudut ka" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
-        <svg class="sudut kb" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
+        <div class="galeri-foto">
+          <div class="bingkai aktif" data-foto="galeri1"><span class="inisial">Y&amp;L</span></div>
+          <div class="bingkai" data-foto="galeri2"><span class="inisial">Y&amp;L</span></div>
+          <div class="bingkai" data-foto="galeri3"><span class="inisial">Y&amp;L</span></div>
+          <div class="bingkai" data-foto="galeri4"><span class="inisial">Y&amp;L</span></div>
+          <div class="bingkai" data-foto="galeri5"><span class="inisial">Y&amp;L</span></div>
+        </div>
       </div>
       <div class="galeri-nav">
         <button class="galeri-panah" id="galeriPrev" aria-label="Foto sebelumnya">
@@ -856,7 +865,7 @@ var t0 = Date.now(), durasi = diam ? 350 : 2500;
 var lapisan = [].slice.call(document.querySelectorAll("[data-p]"));
 var fotoDalam = [];  // foto di dalam bingkai: bergerak berlawanan sedikit
 function kumpulFoto(){
-  fotoDalam = [].slice.call(document.querySelectorAll(".potret img, .bingkai img"));
+  fotoDalam = [].slice.call(document.querySelectorAll(".potret img"));
 }
 kumpulFoto();
 

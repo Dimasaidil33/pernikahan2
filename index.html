@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Arka &amp; Nayla — Undangan Pernikahan</title>
+<title>Yudha &amp; Laela — Undangan Pernikahan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
@@ -91,25 +91,26 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes naik{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* ============ SAMPUL — pintu 3D ============ */
-#sampul{position:fixed;inset:0;z-index:110;perspective:1400px;perspective-origin:50% 45%;
+#sampul{position:fixed;inset:0;z-index:110;perspective:1600px;perspective-origin:50% 45%;
   background:var(--paper-3);overflow:hidden}
-.daun{position:absolute;top:0;bottom:0;width:50.4%;background:var(--paper-2);
-  transform-style:preserve-3d;transition:transform 1.6s cubic-bezier(.72,0,.24,1),opacity 1.2s ease .3s;z-index:1;
-  box-shadow:inset 0 0 90px rgba(30,42,37,.09)}
-.daun.kiri{left:0;transform-origin:left center;
-  background-image:linear-gradient(90deg,transparent 60%,rgba(30,42,37,.07))}
-.daun.kanan{right:0;transform-origin:right center;
-  background-image:linear-gradient(270deg,transparent 60%,rgba(30,42,37,.07))}
-.daun::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:var(--brass);opacity:.35}
-.daun.kiri::after{right:0}.daun.kanan::after{left:0}
-#sampul.buka .daun.kiri{transform:rotateY(-105deg)}
-#sampul.buka .daun.kanan{transform:rotateY(105deg)}
+.daun{position:absolute;top:0;bottom:0;width:51%;background:var(--paper-2);
+  background-size:220% 100%;background-repeat:no-repeat;
+  transform-style:preserve-3d;will-change:transform,opacity;
+  transition:transform 2.1s cubic-bezier(.16,1,.3,1),opacity 1.6s ease .55s;z-index:1}
+.daun.kiri{left:0;transform-origin:left center;background-position:left center}
+.daun.kanan{right:0;transform-origin:right center;transition-delay:.05s,.6s;background-position:right center}
+#sampul.buka .daun.kiri{transform:rotateY(-100deg)}
+#sampul.buka .daun.kanan{transform:rotateY(100deg)}
 #sampul.buka .daun{opacity:0}
+/* lapisan gelap di atas foto sampul supaya teks & tombol tetap terbaca */
+.daun.ada-foto::before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(10,12,10,.42),rgba(10,12,10,.6) 55%,rgba(10,12,10,.78))}
 
 .sampul-in{position:absolute;inset:0;z-index:3;display:grid;place-content:center;justify-items:center;gap:18px;
   text-align:center;padding:calc(var(--pad) + env(safe-area-inset-top,0px)) var(--pad);
-  transition:transform 1.4s cubic-bezier(.72,0,.24,1),opacity .9s ease}
-#sampul.buka .sampul-in{transform:translateZ(340px) scale(1.18);opacity:0}
+  will-change:transform,opacity,filter;
+  transition:transform 1.7s cubic-bezier(.22,1,.36,1),opacity 1.1s ease .15s,filter 1.1s ease .15s}
+#sampul.buka .sampul-in{transform:translateZ(260px) scale(1.1);opacity:0;filter:blur(6px)}
 .sampul-in>*{opacity:0;transform:translateY(14px);animation:naik 1s cubic-bezier(.2,.7,.2,1) forwards}
 .sampul-in>*:nth-child(1){animation-delay:.1s}
 .sampul-in>*:nth-child(2){animation-delay:.24s}
@@ -139,9 +140,21 @@ button{font:inherit;color:inherit;cursor:pointer}
 .tombol:hover{color:var(--paper);transform:translateY(-3px);box-shadow:var(--bayang-2)}
 .tombol:hover::before{transform:translateY(0)}
 
+#bukaBtn{animation:naik 1s cubic-bezier(.2,.7,.2,1) .76s forwards,napasTombol 2.8s ease-in-out 1.9s infinite}
+#bukaBtn:hover,#bukaBtn:focus-visible{animation-play-state:paused}
+@keyframes napasTombol{
+  0%,100%{box-shadow:0 0 0 0 rgba(147,128,90,.32)}
+  50%{box-shadow:0 0 0 9px rgba(147,128,90,0)}
+}
+
 /* ============ PARALLAX & 3D ============ */
-main{position:relative;z-index:2;opacity:0;transition:opacity 1s ease .4s}
-main.tampil{opacity:1}
+main{position:relative;z-index:2;opacity:0;transform:scale(.9);filter:blur(10px);transform-origin:50% 42%}
+main.tampil{animation:masukHalaman 1.7s cubic-bezier(.22,1,.36,1) .5s forwards}
+@keyframes masukHalaman{
+  0%{opacity:0;transform:scale(.9);filter:blur(10px)}
+  52%{opacity:1;transform:scale(1.045);filter:blur(0)}
+  100%{opacity:1;transform:scale(1);filter:blur(0)}
+}
 
 .lapis{position:absolute;inset:0;pointer-events:none;will-change:transform}
 .pano{position:relative;overflow:hidden;isolation:isolate}
@@ -267,7 +280,13 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 .sel{border:1px solid var(--line);padding:18px 4px 14px;text-align:center;background:var(--paper-3);
   box-shadow:var(--bayang-1);position:relative}
 .sel b{font-family:var(--serif);font-weight:300;font-size:clamp(26px,8vw,38px);display:block;line-height:1;
-  font-variant-numeric:tabular-nums}
+  font-variant-numeric:tabular-nums;transform-origin:50% 60%}
+.sel b.ubah{animation:waktuUbah .55s cubic-bezier(.22,1,.36,1)}
+@keyframes waktuUbah{
+  0%{opacity:.35;transform:translateY(-8px) scale(.86)}
+  55%{opacity:1;transform:translateY(1px) scale(1.05)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
 .sel small{font-size:9.5px;letter-spacing:.18em;color:var(--muted);display:block;margin-top:8px}
 
 /* ============ ACARA ============ */
@@ -281,6 +300,35 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 .kartu .waktu{font-size:14px;color:var(--ink-soft);line-height:1.9}
 .kartu .tempat{font-size:13px;color:var(--muted);max-width:30ch;line-height:1.7}
 
+/* ornamen sudut — ranting daun, dipakai di kartu acara & bingkai galeri */
+.sudut{position:absolute;width:30px;height:30px;pointer-events:none;color:var(--brass);opacity:.42;z-index:4}
+.sudut.ka{top:9px;left:9px}
+.sudut.kb{bottom:9px;right:9px;transform:rotate(180deg)}
+.bingkai .sudut{width:26px;height:26px;opacity:.55}
+.bingkai .sudut.ka{top:7px;left:7px}
+.bingkai .sudut.kb{bottom:7px;right:7px}
+
+/* ============ PETA TERTANAM ============ */
+.peta-wrap{margin-top:32px;display:grid;gap:16px;justify-items:center}
+.peta-tab{display:flex;gap:8px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--paper-3)}
+.peta-tab button{border:none;background:transparent;color:var(--muted);font-size:11.5px;letter-spacing:.16em;
+  padding:9px 18px;border-radius:999px;transition:background .35s ease,color .35s ease,transform .25s ease}
+.peta-tab button:hover:not(.kini){color:var(--ink)}
+.peta-tab button:active{transform:scale(.96)}
+.peta-tab button.kini{background:var(--brass);color:var(--paper)}
+.peta-frame{position:relative;width:100%;aspect-ratio:16/11;overflow:hidden;border:1px solid var(--line);
+  box-shadow:var(--bayang-2);background:var(--paper-3)}
+.peta-frame::before{content:"";position:absolute;inset:8px;border:1px solid var(--brass);opacity:.25;
+  pointer-events:none;z-index:2}
+.peta-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:saturate(.82) contrast(1.02)}
+:root[data-theme="dark"] .peta-frame iframe{filter:saturate(.7) contrast(1.05) invert(.92) hue-rotate(180deg)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .peta-frame iframe{filter:saturate(.7) contrast(1.05) invert(.92) hue-rotate(180deg)}
+}
+.peta-buka{font-size:11.5px;letter-spacing:.18em;color:var(--brass);text-decoration:none;
+  border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .3s}
+.peta-buka:hover{border-color:var(--brass)}
+
 /* ============ CERITA ============ */
 .cerita{display:grid;margin-top:42px;position:relative}
 .bab{display:grid;grid-template-columns:78px 1fr;gap:20px;padding-bottom:40px;position:relative}
@@ -293,13 +341,32 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 .bab h4{font-family:var(--serif);font-weight:400;font-size:20px;margin:0 0 6px}
 .bab p{margin:0;font-size:15px}
 
-/* ============ GALERI 3D ============ */
-.galeri{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(8px,2.4vw,14px);margin-top:38px;perspective:1300px}
-.bingkai{position:relative;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(150deg,var(--paper-3),var(--paper-2));
-  border:1px solid var(--line);box-shadow:var(--bayang-2);display:grid;place-items:center}
-.bingkai:nth-child(3){grid-column:span 2;aspect-ratio:16/10}
-.bingkai img{position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;will-change:transform}
-.bingkai .inisial{font-family:var(--script);font-size:clamp(28px,7vw,40px);color:var(--brass);opacity:.4}
+/* ============ GALERI — SLIDESHOW ============ */
+.galeri-wrap{margin-top:42px;display:grid;justify-items:center;gap:22px}
+.galeri-slide{position:relative;width:100%;max-width:460px;aspect-ratio:4/5;overflow:hidden;
+  background:linear-gradient(150deg,var(--paper-3),var(--paper-2));border:1px solid var(--line);
+  box-shadow:var(--bayang-3)}
+.galeri-slide .bingkai{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;
+  opacity:0;transform:scale(1.03);transition:opacity 1.5s cubic-bezier(.4,0,.2,1),transform 1.5s cubic-bezier(.4,0,.2,1);
+  z-index:1}
+.galeri-slide .bingkai.aktif{opacity:1;transform:scale(1);z-index:2}
+.galeri-slide .bingkai img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(1.08);transition:transform 6.5s linear}
+.galeri-slide .bingkai.aktif img{transform:scale(1.2)}
+.galeri-slide .bingkai:nth-child(odd).aktif img{transform-origin:30% 30%}
+.galeri-slide .bingkai:nth-child(even).aktif img{transform-origin:70% 65%}
+.galeri-slide .inisial{font-family:var(--script);font-size:clamp(30px,8vw,44px);color:var(--brass);opacity:.4}
+.galeri-nav{display:flex;align-items:center;gap:16px}
+.galeri-dots{display:flex;align-items:center;gap:8px}
+.galeri-dot{width:6px;height:6px;padding:0;border-radius:50%;border:none;background:var(--line);
+  transition:background .4s ease,width .4s ease,transform .25s ease;cursor:pointer}
+.galeri-dot:hover{background:var(--brass-lite);transform:scale(1.3)}
+.galeri-dot.kini{background:var(--brass);width:22px;border-radius:4px}
+.galeri-panah{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;
+  display:grid;place-items:center;color:var(--ink-soft);transition:border-color .3s,color .3s,transform .3s cubic-bezier(.2,.7,.2,1)}
+.galeri-panah:hover{border-color:var(--brass);color:var(--brass);transform:scale(1.1)}
+.galeri-panah:active{transform:scale(.94)}
+.galeri-panah svg{width:14px;height:14px}
 
 /* ============ PENUTUP ============ */
 #penutup{min-height:88svh;display:grid;align-content:center;text-align:center;overflow:hidden;padding-block:0}
@@ -356,9 +423,7 @@ p{margin:0 0 14px;color:var(--ink-soft)}
   .pemisah{font-size:68px}
   .acara{grid-template-columns:1fr 1fr}
   .bab{grid-template-columns:100px 1fr}
-  .galeri{grid-template-columns:repeat(3,1fr)}
-  .bingkai:nth-child(3){grid-column:span 1;aspect-ratio:3/4}
-  .bingkai:nth-child(1){grid-row:span 2;aspect-ratio:3/5}
+  .galeri-slide{max-width:520px}
 }
 @media (min-width:1100px){
   :root{--maxw:760px}
@@ -376,13 +441,14 @@ p{margin:0 0 14px;color:var(--ink-soft)}
   html{scroll-behavior:auto}
   .muncul,.bangkit,.halaman{opacity:1!important;transform:none!important}
   .tarik{transform:none!important}
+  main{opacity:1!important;transform:none!important;filter:none!important}
   .lapis,.potret img,.bingkai img,.bingkai-latar{transform:none!important}
   #daun-jatuh{display:none}
 }
 </style>
 </head>
 
-<body class="terkunci" data-tanggal="2026-12-12T08:00:00+07:00">
+<body class="terkunci" data-tanggal="2026-10-07T08:00:00+07:00">
 
 <!-- ====== LOADING ====== -->
 <div id="loading">
@@ -391,7 +457,7 @@ p{margin:0 0 14px;color:var(--ink-soft)}
       <circle cx="50" cy="50" r="38" style="--len:240"></circle>
       <path d="M34 66 L50 32 L66 66 M40 55 L60 55" style="--len:120"></path>
     </svg>
-    <div class="monogram-teks">A &amp; N</div>
+    <div class="monogram-teks">Y &amp; L</div>
     <div class="loader-bar"><i></i></div>
     <div class="loader-kata">Menyiapkan undangan</div>
   </div>
@@ -403,9 +469,9 @@ p{margin:0 0 14px;color:var(--ink-soft)}
   <div class="daun kanan"></div>
   <div class="sampul-in">
     <div class="mini">Undangan pernikahan</div>
-    <h1 class="nama-sampul">Arka<span class="amp">&amp;</span>Nayla</h1>
+    <h1 class="nama-sampul">Yudha<span class="amp">&amp;</span>Laela</h1>
     <div class="garis"></div>
-    <div class="mini">Sabtu, 12 Desember 2026</div>
+    <div class="mini">Sabtu, 07 Oktober 2026</div>
     <div class="kpd"><small>Kepada</small><b id="tamu">Bapak / Ibu / Saudara/i</b></div>
     <button class="tombol" id="bukaBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="20" height="14" rx="1.5"/><path d="M2 6.5 12 13.5 22 6.5"/></svg>
@@ -446,6 +512,15 @@ p{margin:0 0 14px;color:var(--ink-soft)}
           fill="currentColor"/>
     <path d="M10.4 2.6C9 9 7.4 16 5.6 24" stroke="rgba(255,255,255,.35)" stroke-width=".9" fill="none"/>
   </symbol>
+  <symbol id="ranting" viewBox="0 0 64 64">
+    <path d="M2 2C9 13 14 24 16 36" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".85"/>
+    <g fill="currentColor">
+      <ellipse cx="7" cy="8" rx="6.4" ry="3" transform="rotate(38 7 8)" opacity=".9"/>
+      <ellipse cx="13.5" cy="17" rx="7" ry="3.3" transform="rotate(42 13.5 17)" opacity=".8"/>
+      <ellipse cx="19" cy="27" rx="6.6" ry="3.1" transform="rotate(46 19 27)" opacity=".68"/>
+      <ellipse cx="23.5" cy="37.5" rx="5.6" ry="2.7" transform="rotate(50 23.5 37.5)" opacity=".5"/>
+    </g>
+  </symbol>
 </svg>
 
 <main id="isi">
@@ -472,8 +547,8 @@ p{margin:0 0 14px;color:var(--ink-soft)}
     <!-- lapis 4 : teks utama, bergerak pelan + memudar -->
     <div class="hero-in" data-p="0.16" data-pudar="1">
       <div class="hero-kecil">The wedding of</div>
-      <h1 class="hero-nama">Arka<span class="amp">&amp;</span>Nayla</h1>
-      <div class="hero-tgl"><i></i><span>12 · 12 · 2026</span><i></i></div>
+      <h1 class="hero-nama">Yudha<span class="amp">&amp;</span>Laela</h1>
+      <div class="hero-tgl"><i></i><span>07 · 10 · 2026</span><i></i></div>
     </div>
 
     <!-- lapis 5 : dedaunan depan, paling cepat -->
@@ -488,11 +563,7 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 
   <!-- ====== PITA FOTO + AYAT ====== -->
   <div class="pita">
-    <!-- [SLOT FOTO 1] Foto lanskap horizontal, pasangan kecil di tengah frame,
-         banyak ruang kosong (pantai/bukit/lorong gedung). Gelapkan sedikit agar teks terbaca.
-         Ganti <div class="kosongan"> di bawah dengan:
-         <div class="bingkai-latar" data-p="0.3"><img src="foto-lebar.jpg" alt=""></div> -->
-    <div class="kosongan bingkai-latar" data-p="0.3"><span>A &amp; N</span></div>
+    <div class="kosongan bingkai-latar" data-p="0.3" data-foto="pita1"><span>A &amp; N</span></div>
     <div class="pita-teks" data-p="-0.12">
       <p class="ayat muncul">Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan dari jenismu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.</p>
       <div class="sumber muncul" style="--d:.15s">Q.S. Ar-Rum : 21</div>
@@ -510,17 +581,15 @@ p{margin:0 0 14px;color:var(--ink-soft)}
     <div class="mempelai">
       <div class="orang">
         <div class="tilt halaman kilau">
-          <div class="tilt-in potret">
-            <!-- [SLOT FOTO 2] Potret vertikal 3:4, wajah di sepertiga atas,
-                 latar polos/bokeh. Foto akan bergerak pelan di dalam bingkai. -->
+          <div class="tilt-in potret" data-foto="pria">
             <span class="inisial">A</span>
           </div>
         </div>
-        <h3 class="nama-orang muncul" style="--d:.12s">Arka Mahendra<br>Wicaksana</h3>
-        <p class="ortu muncul" style="--d:.18s">Putra pertama dari<br>Bapak Suryo Wicaksana &amp; Ibu Larasati</p>
+        <h3 class="nama-orang muncul" style="--d:.12s">Yudha Eko<br>Wibowo</h3>
+        <p class="ortu muncul" style="--d:.18s">Putra pertama dari<br>Bapak Hadi Sucipto &amp; Ibu Ratna Sukaningtyas</p>
         <a class="ig muncul" style="--d:.24s" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          arkamahendra
+          Yudha Eko Wibowo
         </a>
       </div>
 
@@ -528,16 +597,15 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 
       <div class="orang">
         <div class="tilt halaman kanan kilau" style="--d:.14s">
-          <div class="tilt-in potret">
-            <!-- [SLOT FOTO 3] Potret vertikal 3:4 pasangan wanita, gaya sama dengan foto 2. -->
+          <div class="tilt-in potret" data-foto="wanita">
             <span class="inisial">N</span>
           </div>
         </div>
-        <h3 class="nama-orang muncul" style="--d:.22s">Nayla Syafira<br>Putri</h3>
-        <p class="ortu muncul" style="--d:.28s">Putri kedua dari<br>Bapak Hendra Gunawan &amp; Ibu Ratnasari</p>
+        <h3 class="nama-orang muncul" style="--d:.22s">Laela Novianti<br></h3>
+        <p class="ortu muncul" style="--d:.28s">Putri kedua dari<br>Bapak Hendra Gunawan &amp; Ibu Imas Masitoh</p>
         <a class="ig muncul" style="--d:.34s" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          naylasyafira
+          Laela Novianti
         </a>
       </div>
     </div>
@@ -551,7 +619,7 @@ p{margin:0 0 14px;color:var(--ink-soft)}
     </div>
     <div class="isi tengah">
       <div class="eyebrow muncul">Menuju hari bahagia</div>
-      <h2 class="muncul" style="--d:.1s">Sabtu, 12 Desember 2026</h2>
+      <h2 class="muncul" style="--d:.1s">Sabtu, 07 Oktober 2026</h2>
       <div class="mundur">
         <div class="sel bangkit" style="--d:.1s"><b id="hh">00</b><small>Hari</small></div>
         <div class="sel bangkit" style="--d:.18s"><b id="jj">00</b><small>Jam</small></div>
@@ -575,14 +643,18 @@ p{margin:0 0 14px;color:var(--ink-soft)}
     <div class="acara">
       <div class="tilt bangkit kilau" style="--d:.08s">
         <div class="tilt-in kartu">
+          <svg class="sudut ka" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
+          <svg class="sudut kb" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
           <div class="judul naik-z">Akad Nikah</div>
           <div class="garis"></div>
-          <div class="waktu">Sabtu, 12 Desember 2026<br>08.00 – 10.00 WIB</div>
+          <div class="waktu">Sabtu, 07 Oktober 2026<br>08.00 – 10.00 WIB</div>
           <div class="tempat">Masjid Agung Trans Studio<br>Jl. Gatot Subroto No. 289, Bandung</div>
         </div>
       </div>
       <div class="tilt bangkit kilau" style="--d:.2s">
         <div class="tilt-in kartu">
+          <svg class="sudut ka" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
+          <svg class="sudut kb" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
           <div class="judul naik-z">Resepsi</div>
           <div class="garis"></div>
           <div class="waktu">Sabtu, 12 Desember 2026<br>11.00 – 14.00 WIB</div>
@@ -590,19 +662,21 @@ p{margin:0 0 14px;color:var(--ink-soft)}
         </div>
       </div>
     </div>
-    <div class="tengah" style="margin-top:32px">
-      <a class="tombol muncul" style="--d:.3s" href="https://maps.google.com" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
-        <span>Lihat lokasi</span>
-      </a>
+    <div class="peta-wrap bangkit" style="--d:.28s">
+      <div class="peta-tab" id="petaTab">
+        <button type="button" class="kini" data-target="akad">Akad Nikah</button>
+        <button type="button" data-target="resepsi">Resepsi</button>
+      </div>
+      <div class="peta-frame">
+        <iframe id="petaFrame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="Peta lokasi acara"></iframe>
+      </div>
+      <a class="peta-buka" id="petaBuka" href="#" target="_blank" rel="noopener">Buka di Google Maps →</a>
     </div>
   </section>
 
   <!-- ====== PITA FOTO KEDUA ====== -->
   <div class="pita">
-    <!-- [SLOT FOTO 4] Foto suasana: tangan bergandengan, cincin, atau detail dekorasi.
-         Komposisi horizontal, objek sedikit ke pinggir. -->
-    <div class="kosongan bingkai-latar" data-p="0.34"><span>12.12.26</span></div>
+    <div class="kosongan bingkai-latar" data-p="0.34" data-foto="pita2"><span>07.10.26</span></div>
     <div class="pita-teks" data-p="-0.1">
       <p class="ayat muncul">Dua keluarga, satu doa yang sama.</p>
     </div>
@@ -641,14 +715,25 @@ p{margin:0 0 14px;color:var(--ink-soft)}
       <div class="eyebrow muncul">Galeri</div>
       <h2 class="muncul" style="--d:.1s">Momen kami</h2>
     </div>
-    <!-- [SLOT FOTO 5–9] Semua vertikal 3:4. Campur: 1 full body, 2 medium shot,
-         1 detail (tangan/cincin/bunga), 1 candid tertawa. Warna senada. -->
-    <div class="galeri">
-      <div class="bingkai bangkit kilau"><span class="inisial">A&amp;N</span></div>
-      <div class="bingkai bangkit kilau" style="--d:.1s"><span class="inisial">A&amp;N</span></div>
-      <div class="bingkai bangkit kilau" style="--d:.2s"><span class="inisial">A&amp;N</span></div>
-      <div class="bingkai bangkit kilau" style="--d:.3s"><span class="inisial">A&amp;N</span></div>
-      <div class="bingkai bangkit kilau" style="--d:.4s"><span class="inisial">A&amp;N</span></div>
+    <div class="galeri-wrap bangkit" style="--d:.1s">
+      <div class="galeri-slide" id="galeriSlide">
+        <div class="bingkai aktif" data-foto="galeri1"><span class="inisial">A&amp;N</span></div>
+        <div class="bingkai" data-foto="galeri2"><span class="inisial">A&amp;N</span></div>
+        <div class="bingkai" data-foto="galeri3"><span class="inisial">A&amp;N</span></div>
+        <div class="bingkai" data-foto="galeri4"><span class="inisial">A&amp;N</span></div>
+        <div class="bingkai" data-foto="galeri5"><span class="inisial">A&amp;N</span></div>
+        <svg class="sudut ka" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
+        <svg class="sudut kb" viewBox="0 0 64 64" aria-hidden="true"><use href="#ranting"/></svg>
+      </div>
+      <div class="galeri-nav">
+        <button class="galeri-panah" id="galeriPrev" aria-label="Foto sebelumnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5 8 12l7 7"/></svg>
+        </button>
+        <div class="galeri-dots" id="galeriDots"></div>
+        <button class="galeri-panah" id="galeriNext" aria-label="Foto berikutnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -663,7 +748,7 @@ p{margin:0 0 14px;color:var(--ink-soft)}
       <p class="muncul" style="max-width:32ch;margin-inline:auto">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p>
       <div class="garis tarik" style="--d:.16s;margin:26px auto"></div>
       <div class="mini muncul" style="--d:.2s">Kami yang berbahagia</div>
-      <h2 class="penutup-nama muncul" style="--d:.3s">Arka<span class="amp">&amp;</span>Nayla</h2>
+      <h2 class="penutup-nama muncul" style="--d:.3s">Yudha<span class="amp">&amp;</span>Laela</h2>
       <div class="kredit muncul" style="--d:.42s">Terima kasih</div>
     </div>
   </section>
@@ -683,10 +768,66 @@ p{margin:0 0 14px;color:var(--ink-soft)}
 <button id="musik" aria-label="Putar musik" title="Musik"><span class="bar"><i></i><i></i><i></i><i></i></span></button>
 
 <script>
+/* ============================================================================
+   PASANG FOTO DI SINI — SATU-SATUNYA TEMPAT YANG PERLU DIUBAH
+   ============================================================================
+   Isi tanda kutip di bawah dengan alamat foto. Dua cara:
+
+   1) Foto disimpan di folder yang sama dengan file ini, lalu tulis nama filenya:
+        pria: "foto-arka.jpg"
+
+   2) Tempel foto sebagai teks base64 (paling aman, foto akan menyatu ke dalam
+      file & tetap tampil di mana saja, termasuk saat dipublikasikan online):
+        pria: "data:image/jpeg;base64,/9j/4AAQSkZJRgAB..."
+      Cara membuat base64: buka https://www.base64-image.de , unggah foto,
+      salin teks yang muncul (yang diawali "data:image/..."), tempel di sini.
+
+   Kosongkan ("") kalau belum ada fotonya — halaman akan tetap tampil rapi
+   dengan inisial seperti semula.
+   ============================================================================ */
+var FOTO = {
+  sampul:  "6.jpeg",   // foto latar belakang layar pembuka / tombol "Buka undangan"
+  pita1:   "",   // foto lebar di atas ayat pertama (venue/lanskap, pasangan kecil di tengah)
+  pria:    "2.jpeg",   // potret mempelai pria (vertikal 3:4)
+  wanita:  "1.jpeg",   // potret mempelai wanita (vertikal 3:4)
+  pita2:   "",   // foto lebar kedua (detail cincin/tangan/dekorasi)
+  galeri1: "3.jpeg",   // galeri foto 1 (vertikal 3:4)
+  galeri2: "4.jpeg",   // galeri foto 2 (vertikal 3:4)
+  galeri3: "5.jpeg",   // galeri foto 3 — ini yang melebar 2 kolom di HP
+  galeri4: "7.jpeg",   // galeri foto 4 (vertikal 3:4)
+  galeri5: "8.jpeg"    // galeri foto 5 (vertikal 3:4)
+};
+/* ============================================================================ */
+
 (function(){
 "use strict";
 var diam = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var sentuh = window.matchMedia("(hover:none)").matches;
+
+/* ---- memasang foto dari FOTO{} ke tiap slot ---- */
+(function pasangFoto(){
+  Object.keys(FOTO).forEach(function(kunci){
+    var url = FOTO[kunci];
+    if(!url) return;
+    if(kunci === "sampul"){
+      var kiri = document.querySelector("#sampul .daun.kiri");
+      var kanan = document.querySelector("#sampul .daun.kanan");
+      if(kiri){ kiri.style.backgroundImage = 'url("'+url+'")'; kiri.classList.add("ada-foto"); }
+      if(kanan){ kanan.style.backgroundImage = 'url("'+url+'")'; kanan.classList.add("ada-foto"); }
+      return;
+    }
+    var slot = document.querySelector('[data-foto="'+kunci+'"]');
+    if(!slot) return;
+    var img = document.createElement("img");
+    img.src = url;
+    img.alt = "";
+    img.loading = "lazy";
+    var placeholder = slot.querySelector("span");
+    if(placeholder) placeholder.remove();
+    slot.classList.remove("kosongan");
+    slot.insertBefore(img, slot.firstChild);
+  });
+})();
 
 /* ---- nama tamu: ?to=Nama ---- */
 try{
@@ -899,8 +1040,8 @@ document.getElementById("bukaBtn").addEventListener("click", function(){
   setTimeout(function(){
     document.getElementById("nav").classList.add("ada");
     tombolMusik.classList.add("ada");
-  }, 1000);
-  setTimeout(function(){ sampul.style.display="none"; }, 1900);
+  }, 1300);
+  setTimeout(function(){ sampul.style.display="none"; }, 2350);
 });
 
 /* ---- HITUNG MUNDUR ---- */
@@ -908,12 +1049,20 @@ var target = new Date(document.body.dataset.tanggal).getTime();
 var E = {hh:document.getElementById("hh"),jj:document.getElementById("jj"),
          mm:document.getElementById("mm"),dd:document.getElementById("dd")};
 function dua(n){ return n<10 ? "0"+n : ""+n; }
+function setAngka(el, val){
+  if(el.textContent === val) return;
+  el.textContent = val;
+  if(diam) return;
+  el.classList.remove("ubah");
+  void el.offsetWidth; /* paksa reflow supaya animasi bisa diputar ulang */
+  el.classList.add("ubah");
+}
 function hitung(){
   var s = Math.max(0, Math.floor((target-Date.now())/1000));
-  E.hh.textContent = dua(Math.floor(s/86400));
-  E.jj.textContent = dua(Math.floor(s%86400/3600));
-  E.mm.textContent = dua(Math.floor(s%3600/60));
-  E.dd.textContent = dua(s%60);
+  setAngka(E.hh, dua(Math.floor(s/86400)));
+  setAngka(E.jj, dua(Math.floor(s%86400/3600)));
+  setAngka(E.mm, dua(Math.floor(s%3600/60)));
+  setAngka(E.dd, dua(s%60));
 }
 hitung(); setInterval(hitung,1000);
 
@@ -951,6 +1100,113 @@ function tanamDaun(){
   w.innerHTML = html;
   requestAnimationFrame(function(){ w.classList.add("ada"); });
 }
+
+/* ---- PETA TERTANAM ----
+   Ganti "query" di bawah kalau alamat kurang akurat di peta, atau tempel
+   src iframe asli dari Google Maps (klik Bagikan > Sematkan peta > salin
+   bagian src="...") ke properti "src" pada masing-masing lokasi. */
+(function(){
+  var bingkaiPeta = document.querySelector(".peta-frame");
+  if(!bingkaiPeta) return;
+  var frame = document.getElementById("petaFrame");
+  var tombolBuka = document.getElementById("petaBuka");
+  var tabTombol = [].slice.call(document.querySelectorAll("#petaTab button"));
+
+  var LOKASI = {
+    akad: {
+      query: "Masjid Agung Trans Studio, Jl. Gatot Subroto No. 289, Bandung",
+      src: null // isi manual kalau punya link sematkan asli dari Google Maps
+    },
+    resepsi: {
+      query: "Padma Hotel Bandung, Jl. Ranca Bentang No. 56, Bandung",
+      src: null
+    }
+  };
+
+  function embedUrl(l){
+    return l.src || ("https://www.google.com/maps?q=" + encodeURIComponent(l.query) + "&output=embed");
+  }
+  function bukaUrl(l){
+    return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(l.query);
+  }
+  function tampilkan(kunci){
+    var l = LOKASI[kunci];
+    if(!l) return;
+    frame.src = embedUrl(l);
+    tombolBuka.href = bukaUrl(l);
+    tabTombol.forEach(function(b){ b.classList.toggle("kini", b.dataset.target === kunci); });
+  }
+
+  tabTombol.forEach(function(b){
+    b.addEventListener("click", function(){ tampilkan(b.dataset.target); });
+  });
+
+  /* baru muat peta saat kartu terlihat, biar halaman tetap ringan di awal */
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(en){
+      en.forEach(function(e){
+        if(e.isIntersecting){ tampilkan("akad"); io.disconnect(); }
+      });
+    },{threshold:.2});
+    io.observe(bingkaiPeta);
+  }else{
+    tampilkan("akad");
+  }
+})();
+
+/* ---- GALERI: SLIDESHOW OTOMATIS ---- */
+(function(){
+  var slide = document.getElementById("galeriSlide");
+  if(!slide) return;
+  var bingkai = [].slice.call(slide.querySelectorAll(".bingkai"));
+  if(!bingkai.length) return;
+  var dotsWrap = document.getElementById("galeriDots");
+  var idx = 0, timer = null, jeda = 4600;
+
+  bingkai.forEach(function(_, i){
+    var d = document.createElement("button");
+    d.type = "button";
+    d.className = "galeri-dot" + (i === 0 ? " kini" : "");
+    d.setAttribute("aria-label", "Lihat foto " + (i + 1));
+    d.addEventListener("click", function(){ pergiKe(i); atur(); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = [].slice.call(dotsWrap.children);
+
+  function pergiKe(n){
+    bingkai[idx].classList.remove("aktif");
+    if(dots[idx]) dots[idx].classList.remove("kini");
+    idx = (n + bingkai.length) % bingkai.length;
+    bingkai[idx].classList.add("aktif");
+    if(dots[idx]) dots[idx].classList.add("kini");
+  }
+  function lanjut(){ pergiKe(idx + 1); }
+  function mundur(){ pergiKe(idx - 1); }
+  function atur(){
+    clearInterval(timer);
+    if(diam || bingkai.length < 2) return;
+    timer = setInterval(lanjut, jeda);
+  }
+
+  document.getElementById("galeriNext").addEventListener("click", function(){ lanjut(); atur(); });
+  document.getElementById("galeriPrev").addEventListener("click", function(){ mundur(); atur(); });
+
+  /* sentuh: geser untuk pindah foto */
+  var xAwal = null;
+  slide.addEventListener("touchstart", function(e){ xAwal = e.touches[0].clientX; }, {passive:true});
+  slide.addEventListener("touchend", function(e){
+    if(xAwal === null) return;
+    var beda = e.changedTouches[0].clientX - xAwal;
+    if(Math.abs(beda) > 40){ beda < 0 ? lanjut() : mundur(); atur(); }
+    xAwal = null;
+  }, {passive:true});
+
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden) clearInterval(timer); else atur();
+  });
+
+  atur();
+})();
 
 /* jika foto ditambahkan belakangan, panggil ulang */
 window.addEventListener("load", function(){ kumpulFoto(); minta(); });
